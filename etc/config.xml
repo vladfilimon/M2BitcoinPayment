@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <vladfilimon_m2bitcoinpayment>
+                <active>0</active>
+                <model>VladFilimon\M2BitcoinPayment\Model\Bitcoin</model>
+                <title>Bitcoin</title>
+                <order_status>processing</order_status>
+                <payment_action>authorize_capture</payment_action>
+                <visible_on_cart>1</visible_on_cart>
+                <prefix>111.</prefix>
+                <host>127.0.0.1</host>
+                <port>8332</port>
+                <ssl>0</ssl>
+                <user backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <pass backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <nr_confirmations>6</nr_confirmations>
+                <expire_minutes>30</expire_minutes>
+                <service>blockchain</service>
+                <sort_order>167</sort_order>
+                <allowspecific>0</allowspecific>
+            </vladfilimon_m2bitcoinpayment>
+        </payment>
+    </default>
+</config> 

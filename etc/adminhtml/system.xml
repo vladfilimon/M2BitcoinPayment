@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="vladfilimon_m2bitcoinpayment" translate="label" type="text" sortOrder="107" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Bitcoin Direct Payment</label>
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Displayed Title</label>
+					<depends>
+                        <field id="active">1</field>
+					</depends>                     
+                </field>
+                <field id="order_status" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Status for New Orders</label>
+                    <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
+					<depends>
+                        <field id="active">1</field>
+					</depends>                      
+                </field> 
+                <field id="instance_prefix" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Magento Account Prefix</label>
+                    <comment>Unique prefix for each Magento installation. This is important if you are using several Magento installation on the same bitcoin server</comment>
+					<depends>
+                        <field id="active">1</field>
+					</depends>                     
+                </field>                               
+                <field id="host" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Bitcoin Client Host</label>
+					<depends>
+                        <field id="active">1</field>
+					</depends>                     
+                </field>                
+                <field id="port" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Bitcoin Client Port</label>
+					<depends>
+                        <field id="active">1</field>
+					</depends>                     
+                </field>                
+                <field id="ssl" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Use SSL</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+					<depends>
+                        <field id="active">1</field>
+					</depends>                      
+                </field>
+                <field id="user" translate="label" type="obscure" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Bitcoin RPC User</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+					<depends>
+                        <field id="active">1</field>
+					</depends>                     
+                </field>                
+                <field id="pass" translate="label" type="obscure" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Bitcoin RPC Password</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+					<depends>
+                        <field id="active">1</field>
+					</depends>                     
+                </field>  
+                <field id="validate" translate="button_label" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <button_label>Test connection</button_label>
+                    <frontend_model>VladFilimon\M2BitcoinPayment\Block\Adminhtml\System\Config\Test</frontend_model>
+					<depends>
+                        <field id="active">1</field>
+					</depends>                      
+				</field>                                  
+                <field id="nr_confirmations" translate="label comment" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Number of Confirmations</label>
+                    <comment>Required number of blocks until the transaction is confirmed</comment>
+					<depends>
+                        <field id="active">1</field>
+					</depends>                     
+                </field>                  
+                <field id="expire_minutes" translate="button_label" type="text" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Expiration minutes</label>
+                    <comment>The number of minutes after which an order with an unconfirmed transaction will be canceled</comment>
+					<depends>
+                        <field id="active">1</field>
+					</depends>                     
+                </field>
+                <field id="allowspecific" translate="label" type="allowspecific" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Payment from Applicable Countries</label>
+                    <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+					<depends>
+                        <field id="active">1</field>
+					</depends>                      
+                </field>
+                <field id="specificcountry" translate="label" type="multiselect" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Payment from Specific Countries</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+					<depends>
+                        <field id="active">1</field>
+                        <field id="allowspecific">1</field>
+					</depends>                      
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="180" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Sort Order</label>
+					<depends>
+                        <field id="active">1</field>
+					</depends>                      
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
