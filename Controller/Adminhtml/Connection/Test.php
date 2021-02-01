@@ -18,7 +18,7 @@ class Test extends Action
     /**
      * @var \VladFilimon\M2BitcoinPayment\Model\Transport
      */
-    protected $_transport;    
+    protected $_transport;
 
     /**
      * @param Context $context
@@ -26,43 +26,43 @@ class Test extends Action
      * @param Transport $transport
      */
     public function __construct(
-        Context $context,       
+        Context $context,
         JsonFactory $resultFactory,
         Transport $transport
-    ) {    
+    ) {
         $this->_resultFactory = $resultFactory;
         $this->_transport = $transport;
         
         parent::__construct(
-			$context
-		);
+            $context
+        );
     }
    
     /**
      * @return \Magento\Framework\Controller\ResultInterface|ResponseInterface
      * @throws \Magento\Framework\Exception\NotFoundException
-     */     
+     */
     public function execute()
     {
-		$result = ['valid' => 0, 'message' => __('Connection has failed')];
+        $result = ['valid' => 0, 'message' => __('Connection has failed')];
 
-		$this->_transport->setConfig(
-			$this->getRequest()->getParams()
-		);
+        $this->_transport->setConfig(
+            $this->getRequest()->getParams()
+        );
 
-		try {
-			$info = $this->_transport->getInfo();
-			if ($info && !empty($info->version)) {
-				$result = [
-					'valid' => 1, 
-					'message' => __('Connection was successful')
-				];
-			}	
-		} catch (\Exception $e) {
-			$result['message'] = $e->getMessage();
-		}	
+        try {
+            $info = $this->_transport->getInfo();
+            if ($info && !empty($info->version)) {
+                $result = [
+                    'valid' => 1,
+                    'message' => __('Connection was successful')
+                ];
+            }
+        } catch (\Exception $e) {
+            $result['message'] = $e->getMessage();
+        }
 
-        $resultJson = $this->_resultFactory->create();			
+        $resultJson = $this->_resultFactory->create();
         return $resultJson->setData($result);
     }
-} 
+}

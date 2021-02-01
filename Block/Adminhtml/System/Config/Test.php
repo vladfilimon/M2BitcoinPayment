@@ -32,7 +32,7 @@ class Test extends Field
      * @param string $element
      * @return \Magento\Config\Block\System\Config\Form\Field
      */
-    public function setParam($name, $element=null)
+    public function setParam($name, $element = null)
     {
         $this->_buttonParams->setData($name, $element);
 
@@ -51,7 +51,7 @@ class Test extends Field
         
         return $this;
     }
-	
+    
     /**
      * Set template to itself
      *
@@ -63,7 +63,7 @@ class Test extends Field
         
         if (!$this->getTemplate()) {
             $this->setTemplate('system/config/test.phtml');
-        } 
+        }
               
         $this->_buttonParams = new DataObject();
                
@@ -79,9 +79,9 @@ class Test extends Field
     public function render(AbstractElement $element)
     {
         $element->unsScope()
-			->unsCanUseWebsiteValue()
-			->unsCanUseDefaultValue();
-			
+            ->unsCanUseWebsiteValue()
+            ->unsCanUseDefaultValue();
+            
         return parent::render($element);
     }
 
@@ -94,14 +94,14 @@ class Test extends Field
     protected function _getElementHtml(AbstractElement $element)
     {
         $data = $element->getOriginalData();
-        $label = !empty($data['button_label']) 
-			? $data['button_label'] 
-			: $this->_buttonLabel;
-			
+        $label = !empty($data['button_label'])
+            ? $data['button_label']
+            : $this->_buttonLabel;
+            
         $this->addData(
             [
                 'button_label'   => __($label),
-                'html_id'  	     => $element->getHtmlId(),
+                'html_id'           => $element->getHtmlId(),
                 'ajax_url'       => $this->_urlBuilder->getUrl('m2bitcoinpayment/connection/test'),
                 'js_function'    => 'vfBitcoinRpcTest',
                 'html_result_id' => 'vf_bitcoin_rpc_test',
@@ -117,9 +117,7 @@ class Test extends Field
      * @return \Magento\Framework\DataObject
      */
     public function getParams()
-    {         
+    {
         return $this->_buttonParams;
-    }    
+    }
 }
- 
- 
