@@ -1,0 +1,27 @@
+
+{
+    "name": "vladfilimon/module-bitcoin-payment",
+    "description": "A Bitcoin payment method for Magento2 ecommerce using node RPC API.",
+    "type": "magento2-module",
+	  "version": "0.0.1",
+    "authors": [{
+        "name" : "Vlad Filimon",
+        "email": "vlad.filimon@protonmail.com"
+    }],		
+	"license": [
+		"OSL-3.0"
+    ],
+	"require": {
+		"php": "~7.3.0||~7.4.0",
+		"ext-bcmath": "*",
+		"magento/module-payment": "100.4.*"
+    },
+	"autoload": {
+        "files": [ 
+            "registration.php" 
+        ],
+        "psr-4": {
+            "VladFilimon\\M2BitcoinPayment\\": ""
+        }
+	}
+}
