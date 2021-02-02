@@ -14,7 +14,8 @@ jobs:
       DJANGO_SETTINGS_MODULE: app_name.settings.dev
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       PORT: 8000
-
+      MAGENTO_MARKETPLACE_USERNAME: ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }}
+      MAGENTO_MARKETPLACE_PASSWORD: ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }}
     steps:
     - uses: actions/checkout@master
       with:
