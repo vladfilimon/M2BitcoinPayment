@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@master
       with:
         repository: vladfilimon/docker-compose-magento2
-        token: ${{ secrets.my_pat }}
+        #token: ${{ secrets.my_pat }}
     - name: Build the docker-compose stack
       run: docker-compose -f docker-compose.yml up -d
     - name: Downgrade composer
