@@ -23,20 +23,20 @@ jobs:
     - name: Build the docker-compose stack
       run: docker-compose -f docker-compose.test.yml up -d
     - name: Downgrade composer
-      run: docker exec -it apache composer selfupdate --1 
+      run: docker exec -it m2bitcoinpayment_apache_1 composer selfupdate --1 
     - name: Install Magento2
-      run: docker exec -it apache COMPOSER_MEMORY_LIMIT=-1 composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition .
+      run: docker exec -it m2bitcoinpayment_apache_1 COMPOSER_MEMORY_LIMIT=-1 composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition .
     - name: Configuring M2BitcoinPayment Repo in composer
-      run: docker exec -it apache composer config repositories.vladfilimon-M2BitcoinPayment git git@github.com:vladfilimon/M2BitcoinPayment.git
+      run: docker exec -it m2bitcoinpayment_apache_1 composer config repositories.vladfilimon-M2BitcoinPayment git git@github.com:vladfilimon/M2BitcoinPayment.git
     - name: Checking out M2BitcoinPayment
-      run: docker exec -it apache composer require vladfilimon/M2BitcoinPayment dev-master
+      run: docker exec -it m2bitcoinpayment_apache_1 composer require vladfilimon/M2BitcoinPayment dev-master
     - name: Setup Magento2
-      run: docker exec -it apache bin/magento setup:install --db-host docker-magento2_db_1 --db-name magento2 --db-user magento2 --db-password magento2  --admin-user admin --timezone 'Europe/Bucharest' --currency EUR --use-rewrites 1 --cleanup-database --backend-frontname admin --admin-firstname AdminFirstName --admin-lastname AdminLastName --admin-email 'admin@email.com' --admin-password 'ChangeThisPassword1' --base-url 'http://magento2.docker/' --language en_US --session-save=redis --session-save-redis-host=sessions --session-save-redis-port=6379 --session-save-redis-db=0 --session-save-redis-password='' --cache-backend=redis --cache-backend-redis-server=cache --cache-backend-redis-port=6379 --cache-backend-redis-db=0 --page-cache=redis --page-cache-redis-server=cache --page-cache-redis-port=6379 --page-cache-redis-db=1 --search-engine=elasticsearch7 --elasticsearch-host=docker-magento2_elasticsearch_1
+      run: docker exec -it m2bitcoinpayment_apache_1 bin/magento setup:install --db-host docker-magento2_db_1 --db-name magento2 --db-user magento2 --db-password magento2  --admin-user admin --timezone 'Europe/Bucharest' --currency EUR --use-rewrites 1 --cleanup-database --backend-frontname admin --admin-firstname AdminFirstName --admin-lastname AdminLastName --admin-email 'admin@email.com' --admin-password 'ChangeThisPassword1' --base-url 'http://magento2.docker/' --language en_US --session-save=redis --session-save-redis-host=sessions --session-save-redis-port=6379 --session-save-redis-db=0 --session-save-redis-password='' --cache-backend=redis --cache-backend-redis-server=cache --cache-backend-redis-port=6379 --cache-backend-redis-db=0 --page-cache=redis --page-cache-redis-server=cache --page-cache-redis-port=6379 --page-cache-redis-db=1 --search-engine=elasticsearch7 --elasticsearch-host=docker-magento2_elasticsearch_1
     - name: Enable/Disable Magento2 modules
-      run: docker exec -it apache module:enable VladFilimon_M2BitcoinPayment
+      run: docker exec -it m2bitcoinpayment_apache_1 module:enable VladFilimon_M2BitcoinPayment
     - name: Compiling Magento2 DI
-      run: docker exec -it apache bin/magento setup:di:compile
+      run: docker exec -it m2bitcoinpayment_apache_1 bin/magento setup:di:compile
     - name: Running PhpCS
-      run: docker exec -it apache vendor/bin/phpcs --standard=Magento2 vendor/vladfilimon/M2BitcoinPayment/  
+      run: docker exec -it m2bitcoinpayment_apache_1 vendor/bin/phpcs --standard=Magento2 vendor/vladfilimon/M2BitcoinPayment/  
     - name: Running PhpUnit
-      run: docker exec -it apache vendor/bin/phpunit vendor/vladfilimon/M2BitcoinPayment/
+      run: docker exec -it m2bitcoinpayment_apache_1 vendor/bin/phpunit vendor/vladfilimon/M2BitcoinPayment/
