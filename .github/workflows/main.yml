@@ -21,7 +21,7 @@ jobs:
         repository: vladfilimon/docker-compose-magento2
         #token: ${{ secrets.my_pat }}
     - name: Build the docker-compose stack
-      run: docker-compose -f docker-compose.yml up -d
+      run: docker-compose -f docker-compose.test.yml up -d
     - name: Downgrade composer
       run: docker exec -it apache composer selfupdate --1 
     - name: Install Magento2
