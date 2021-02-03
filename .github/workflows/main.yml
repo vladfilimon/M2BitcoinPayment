@@ -26,7 +26,7 @@ jobs:
     - name: Downgrade composer
       run: docker exec -t m2bitcoinpayment_apache_1 composer selfupdate --1 
     - name: Configuring composer authentication for repo.magento.com
-      run: docker exec -t m2bitcoinpayment_apache_1 composer config --global repo.magento.com ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }} ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }} 
+      run: docker exec -t m2bitcoinpayment_apache_1 composer config -g repo.packagist composer https://repo.packagist.org ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }} ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }} 
     - name: Install Magento2
       run: docker exec -e COMPOSER_MEMORY_LIMIT="-1" -t m2bitcoinpayment_apache_1 composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition .
     - name: Configuring M2BitcoinPayment Repo in composer
