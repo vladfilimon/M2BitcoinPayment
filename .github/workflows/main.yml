@@ -26,7 +26,7 @@ jobs:
     - name: Downgrade composer
       run: docker exec -t m2bitcoinpayment_apache_1 composer selfupdate --1 
     - name: Configuring composer registry for repo.magento.com
-      run: docker exec -t m2bitcoinpayment_apache_1  composer config -g repositories.magento '{"type": "composer", "url": "https://repo.magento.com/" }' 
+      run: docker exec -t m2bitcoinpayment_apache_1  composer config -g repositories.magento '{"type":"composer", "url":"https://repo.magento.com/"}'
     - name: Configuring composer credentials for repo.magento.com
       run: docker exec -t m2bitcoinpayment_apache_1 composer config -g http-basic.repo.magento.com ${{ secrets.MAGENTO_MARKETPLACE_USERNAME }} ${{ secrets.MAGENTO_MARKETPLACE_PASSWORD }} 
     - name: Install Magento2
