@@ -32,7 +32,8 @@ jobs:
     - name: Install Magento2
       run: docker exec -e COMPOSER_MEMORY_LIMIT="-1" -t m2bitcoinpayment_apache_1 composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition .
     - name: Configuring M2BitcoinPayment Repo in composer
-      run: docker exec -t m2bitcoinpayment_apache_1 composer config repositories.vladfilimon-M2BitcoinPayment git git@github.com:vladfilimon/M2BitcoinPayment.git
+      run: docker exec -t m2bitcoinpayment_apache_1 composer config repositories.vladfilimon-M2BitcoinPayment https https://github.com/vladfilimon/M2BitcoinPayment.git
+#      run: docker exec -t m2bitcoinpayment_apache_1 composer config repositories.vladfilimon-M2BitcoinPayment git git@github.com:vladfilimon/M2BitcoinPayment.git
     - name: Disabling tStrictHostKeyChecking
       run: docker exec -t m2bitcoinpayment_apache_1 bash -c 'mkdir ~/.ssh && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config'
     - name: Configure composer to use HTTPS protocol
