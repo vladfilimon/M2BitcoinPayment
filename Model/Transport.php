@@ -8,57 +8,41 @@ use Magento\Store\Model\ScopeInterface;
 class Transport
 {
     /**
-     * Host for JSON-RPC connections
-     *
      * @var string
      */
     protected $_host;
 
     /**
-     * Port for JSON-RPC connections
-     *
      * @var string
      */
     protected $_port;
 
     /**
-     * Use Secure Sockets Layer (also known as TLS or HTTPS) to communicate with server
-     *
      * @var bool
      */
     protected $_ssl;
 
     /**
-     * Username for JSON-RPC connections
-     *
      * @var string
      */
     protected $_user;
 
     /**
-     * Password for JSON-RPC connections
-     *
      * @var string
      */
     public $_pass;
 
     /**
-     * Encryptor Interface
-     *
      * @var \Magento\Framework\Encryption\EncryptorInterface
      */
     protected $_encryptor;
 
     /**
-     * Scope Config
-     *
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
     protected $_scopeConfig;
 
     /**
-     * Initialize transport instance
-     *
      * @param EncryptorInterface $encryptor
      * @param ScopeConfigInterface $scopeConfig
      */
@@ -71,8 +55,6 @@ class Transport
     }
 
     /**
-     * Performs a jsonRCP request and gets the results
-     *
      * @param string $method
      * @param array $params
      * @return stdClass
@@ -100,8 +82,6 @@ class Transport
     }
 
     /**
-     * Config instance getter
-     *
      * @param string $config
      * @param bool $checkEncrypt
      * @return this
@@ -126,8 +106,6 @@ class Transport
     }
 
     /**
-     * Retrieve server url
-     *
      * @return string
      */
     public function getUrl()
@@ -138,8 +116,6 @@ class Transport
     }
 
     /**
-     * Returns the Zend Http Client
-     *
      * @return \Zend_Http_Client
      */
     public function getClient()
@@ -150,60 +126,11 @@ class Transport
         ]);
     }
 
-    /**
-     * Returns an object containing various state info
-     *
-     * @return stdClass
-     */
-    public function getInfo()
+    public function __call($method, array $args = [])
     {
         return $this->call(
-            'getinfo',
-            []
-        );
-    }
-
-    /**
-     * Returns a new coin address for receiving payments. If account is specified payments received
-     * with the address will be credited to account
-     *
-     * @return string
-     */
-    public function getNewAddress($account = null)
-    {
-        return $this->call(
-            'getnewaddress',
-            (null === $account) ? [] : [$account]
-        );
-    }
-
-    /**
-     * Returns the amount received by address in transactions with at least confirmations. It
-     * correctly handles the case where someone has sent to the address in multiple transactions.
-     * Keep in mind that addresses are only ever used for receiving transactions. Works only for
-     * addresses in the local wallet, external addresses will always show 0
-     *
-     * @return stdClass
-     */
-    public function getReceivedByAddress($address)
-    {
-        return $this->call(
-            'getreceivedbyaddress',
-            [$address]
-        );
-    }
-
-    /**
-     * Returns up to most recent transactions skipping the first transactions for account.If account
-     * not provided it'll return recent transactions from all accounts.
-     *
-     * @return stdClass
-     */
-    public function listTransactions($account = null)
-    {
-        return $this->call(
-            'listtransactions',
-            [$account]
+            $method,
+            $args
         );
     }
 }

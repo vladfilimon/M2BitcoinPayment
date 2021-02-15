@@ -14,7 +14,7 @@ class Test extends Action
      * @var \Magento\Framework\Controller\Result\JsonFactory
      */
     protected $_resultFactory;
-    
+
     /**
      * @var \VladFilimon\M2BitcoinPayment\Model\Transport
      */
@@ -32,12 +32,12 @@ class Test extends Action
     ) {
         $this->_resultFactory = $resultFactory;
         $this->_transport = $transport;
-        
+
         parent::__construct(
             $context
         );
     }
-   
+
     /**
      * @return \Magento\Framework\Controller\ResultInterface|ResponseInterface
      * @throws \Magento\Framework\Exception\NotFoundException
@@ -51,8 +51,8 @@ class Test extends Action
         );
 
         try {
-            $info = $this->_transport->getInfo();
-            if ($info && !empty($info->version)) {
+            $info = $this->_transport->getwalletinfo();
+            if ($info && !empty($info->walletversion)) {
                 $result = [
                     'valid' => 1,
                     'message' => __('Connection was successful')
