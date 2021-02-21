@@ -71,14 +71,24 @@ class Transport
                 ->setHeaders('Content-type', 'application/json');
 
             $response = $client->request(\Zend_Http_Client::POST);
-            if ($response->isSuccessful()) {
+
+            if ($response->isError()) {
+                $message = 'ERR_BITCOIN_CLIENT_RPC_CALL';
                 $data = json_decode($response->getBody());
-                if (empty($data->error) && !empty($data->result)) {
-                    return $data->result;
+                if (isset($data->error->message)) {
+                    $message = $data->error->message;
                 }
+                throw new \Exception($message);
             }
+
+            $data = json_decode($response->getBody());
+            if (empty($data->error)) {
+                return $data->result;
+            }
+
         }
-        return false;
+
+        throw new \Exception('ERR_BITCOIN_CLIENT_RPC_CALL');
     }
 
     /**

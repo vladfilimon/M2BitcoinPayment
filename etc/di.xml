@@ -1,12 +1,5 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © 2011-2017 Karliuka Vitalii(karliuka.vitalii@gmail.com)
- * 
- * See COPYING.txt for license details.
- */
--->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Faonni\Bitcoin\Model\Import\Config">
         <arguments>
@@ -18,7 +11,7 @@
                 <item name="bitcoincharts" xsi:type="array">
                     <item name="label" xsi:type="string">Bitcoincharts.com</item>
                     <item name="class" xsi:type="string">Faonni\Bitcoin\Model\Import\Bitcoincharts</item>
-                </item>				
+                </item>
             </argument>
         </arguments>
     </type>

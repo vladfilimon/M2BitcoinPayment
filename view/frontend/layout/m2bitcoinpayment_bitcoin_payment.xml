@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="VladFilimon\M2BitcoinPayment\Block\Payment" name="m2bitcoinpayment.bitcoin.payment" template="VladFilimon_M2BitcoinPayment::payment.phtml">
+            </block>
+        </referenceContainer>
+    </body>
+</page>

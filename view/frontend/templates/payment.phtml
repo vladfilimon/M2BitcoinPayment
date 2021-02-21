@@ -1,0 +1,226 @@
+<style>
+    /*
+    html {
+        height:100%;
+        margin:0;
+        min-height: 100%;
+        font-family: sans-serif;
+    }
+
+    body {
+        background-image: linear-gradient(#E0FFFF, #F0F8FF);
+        background-repeat: no-repeat;
+        background-size: cover;
+        text-align: center;
+        height: 100%;
+        margin:0;
+        overflow: hidden;
+    }
+    */
+    #wrapper {
+        text-align: center;
+    }
+    .code {
+        background-image: linear-gradient(#E0FFFF, #F0F8FF);
+        position: relative;
+        margin: auto;
+        max-width: 400px;
+        /*
+        width: 400px;
+        height: 350px;*/
+        background-color: white;
+        border-radius: 10px;
+        /*border-bottom: solid 50px #fff;*/
+        box-shadow: 0 0 20px #333;
+    }
+    .QR {
+        position: relative;
+        margin: auto;
+        padding: 0;
+        width: 200px;
+        height: 200px;
+        background-color: black;
+    }
+
+    .btnPlata {
+        position: relative;
+        margin-bottom: 0px;
+        padding-bottom: 0px;
+        padding-top: 10px;
+        line-height: 30px;
+        font-size: 15px;
+        border-radius: 6px;
+        background-color: DarkBlue;
+        margin-top: 10px;
+        font-weight: bold;
+        color: white;
+        box-shadow:8px 5px 8px #4f83f7;
+        transition: transform .3s ease-out;
+    }
+    .btnPlata button{
+        hover{background-color:orange;}
+    }
+    /*
+    .main {
+        position:relative;
+    }
+    #wrapper {
+        position:relative;
+
+    }*/
+    #my_canvas{
+        width: 70px;
+        height: 70px;
+        animation-delay: 0.5;
+    }
+    #loading {
+        right: 0;
+        position: absolute;
+        padding-right: 5%;
+    }
+    #info {
+        font-size:12px;
+        display:table;
+        z-index:2;
+        position:absolute;
+        width:90%;
+        /*opacity: 90%;*/
+        height:100%;
+        max-width:400px;
+        /*
+        background-image: linear-gradient(#E0FFFF, #F0F8FF);
+        background-repeat: no-repeat;
+        background-size: cover;*/
+        background-color:white;
+        border-radius: 10px;
+        /*border-bottom: solid 50px #fff;*/
+        box-shadow: 0 0 20px #333;
+        padding-top:0%;
+        padding-left:10%;
+        margin:auto;
+        font-family: Heebo, Sans-serif;
+    }
+    p {
+        display:table-row;
+        text-align: left;
+        width: auto;
+        clear: both;
+        font-size:12px;
+    }
+    p span {
+        font-weight: bold;
+        display:table-cell;
+        float:left;
+        width:20%;
+    }
+
+    p span.timer {
+        float:left;
+        width: 8%;
+        margin-left: 10%;
+    }
+
+    #info div:first-child {
+        top:5%;
+        left:90%;
+        display:block;
+        position:absolute;
+        cursor: pointer;
+    }
+    #info div:first-child a {
+        text-decoration: none;
+    }
+    h2 span {
+        font-size:16px;
+        display: block;
+        margin-top:24px;
+        font-weight: lighter;
+    }
+
+    #my_canvas {
+        cursor: pointer;
+    }
+</style>
+<?php
+if ($this->getRemainingTime()):?>
+    <div id="wrapper">
+        <h2><?php echo __('Bitcoin payment');?></h2>
+        <h3><?php echo __('Do you need help?');?></h3>
+        <div class="code">
+            <div id="info">
+                <div><a onclick="jQuery('#info').toggle('display');">&#x2715</a></div>
+                <p><span><?php echo __('Order id')?>:</span> <?php echo $this->getOrder()->getIncrementId();?></p>
+                <p><span><?php echo __('Address')?>:</span> <?php echo $this->getAddress();?></p>
+                <p><span><?php echo __('Amount')?>:</span> <?php echo $this->getAmount();?></p>
+                <p><span><?php echo __('Max conf')?>:</span> <?php echo $this->getRequiredConfirmations();?></p>
+                <p><span><?php echo __('Time left')?>:</span> <span class="timer"><?php echo $this->getRemainingTime();?></span> <?php echo __('seconds')?></p>
+            </div>
+            <br>
+            <div id="loading">
+                <canvas id="my_canvas" width="70" height="70" onclick="jQuery('#info').toggle('display');">
+                </canvas>
+            </div>
+
+            <h2>Send <?php echo $this->getAmount();?> BTC to <br/><span><?php echo $this->getAddress();?></span></h2>
+            <div class="QR">
+                <img src="data:image/svg+xml;base64, <?php echo $this->getQr(); ?> " alt="<?php echo __('Payment QR code');?>"/>
+            </div>
+            <div style="width:0;height:0;overflow: hidden">
+            <input type="text" id="payment_uri" name="payment_uri" value="<?php echo $this->getUri();?>" readonly />
+            </div>
+                <h5><a href="#" onclick="javascipt:document.getElementById('payment_uri').select();document.execCommand('copy');"><?php echo __('Copy payment URL');?></a></h5>
+            <div class="button">
+                <button class="btnPlata"><span><?php echo __('Open in Wallet');?></span></button>
+            </div>
+            <br/>
+        </div>
+    </div>
+    <!--<script src="Cyberia_CryptoPayment::js/progressbar.js"/>-->
+    <script type="text/javascript">
+        setInterval(function(){
+            let remaining = parseInt(document.querySelector('span.timer').textContent);
+            if (remaining > 0) {
+                document.querySelector('span.timer').textContent = parseInt(document.querySelector('span.timer').textContent) - 1;
+            }
+        }, 1000);
+
+        var ctx = document.getElementById('my_canvas').getContext('2d');
+        var al = 0;
+        var start = 4.72;
+        var cw = ctx.canvas.width;
+        var ch = ctx.canvas.height;
+        var total = <?php echo $this->getRemainingTime();?>;
+        var diff;
+        var gradient = ctx.createLinearGradient(0, 0, 170, 0);
+        gradient.addColorStop("0", "navy");
+        gradient.addColorStop("0.5" , "aqua");
+        gradient.addColorStop("1.0", "white");
+        let sim;
+        function progressSim(){
+            diff = ((al/total) * Math.PI*2*10).toFixed(2);
+            ctx.clearRect(0, 0, cw, ch);
+            ctx.lineWidth = 7;
+            ctx.fillStyle = "navy";
+            ctx.strokeStyle = gradient;
+            ctx.textAlign = "center";
+            ctx.fillText ((total - al) + " " + "seconds", cw*.5, ch*.5+2, cw);
+            ctx.beginPath();
+            ctx.arc(35,35,30, start, diff/10+start, false);
+            ctx.stroke();
+            if(al>=total) {
+                clearTimeout(sim);
+            }
+            al++;
+        }
+
+        document.addEventListener("DOMContentLoaded", function(){
+            sim = setInterval(progressSim, 600);
+        });
+/*
+        setTimeout(function(){
+            window.location.reload(1);
+        }, 10000);*/
+    </script>
+<?php else:
+    echo __('Payment link has expired');
+endif;?>
