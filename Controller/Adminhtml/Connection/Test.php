@@ -1,10 +1,10 @@
 <?php
 namespace VladFilimon\M2BitcoinPayment\Controller\Adminhtml\Connection;
 
-use VladFilimon\M2BitcoinPayment\Model\Transport;
-use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\Controller\Result\JsonFactory;
+use VladFilimon\M2BitcoinPayment\Model\Transport;
 
 class Test extends Action
 {

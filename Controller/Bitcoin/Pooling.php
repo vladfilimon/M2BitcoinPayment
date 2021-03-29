@@ -1,16 +1,10 @@
 <?php
 namespace VladFilimon\M2BitcoinPayment\Controller\Bitcoin;
 
+use Magento\Framework\App\Action\Action;
+use VladFilimon\M2BitcoinPayment\Helper\Data;
 use VladFilimon\M2BitcoinPayment\Model\Bitcoin;
 use VladFilimon\M2BitcoinPayment\Model\Transport;
-use VladFilimon\M2BitcoinPayment\Helper\Data;
-use Magento\Framework\App\Action\Action;
-use Magento\Framework\Controller\ResultFactory;
-use \Magento\Framework\Exception\NotFoundException;
-use Magento\Sales\Model\Order\Email\Sender\OrderSender;
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Session\SessionManager;
-use Magento\Framework\Exception\NoSuchEntityException;
 
 class Pooling extends Action
 {
@@ -61,8 +55,7 @@ class Pooling extends Action
         \Magento\Framework\Event\ManagerInterface $eventManager,
         Transport $transport,
         Data $helper
-    )
-    {
+    ) {
         $this->_orderRepository = $orderRepository;
         $this->_pageResultFactory = $pageFactory;
         $this->_checkoutSession = $checkoutSession;
@@ -89,9 +82,7 @@ class Pooling extends Action
 
         try {
             $order = $this->_orderRepository->get(reset($decodedArray));
-        }
-        catch(\NoSuchEntityException $e)
-        {
+        } catch (\NoSuchEntityException $e) {
             throw new \Exception('ERR_ORDER_NOT_FOUND');
         }
 
@@ -112,5 +103,4 @@ class Pooling extends Action
             $requiredConf
         );
     }
-
 }

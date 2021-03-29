@@ -1,6 +1,8 @@
 <?php
 namespace VladFilimon\M2BitcoinPayment\Controller;
 
+use Magento\Framework\App\Action\Forward;
+
 class Router implements \Magento\Framework\App\RouterInterface
 {
     /**
@@ -36,7 +38,6 @@ class Router implements \Magento\Framework\App\RouterInterface
      */
     protected $_response;
 
-
     /**
      * @param \Magento\Framework\App\ActionFactory $actionFactory
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
@@ -66,26 +67,26 @@ class Router implements \Magento\Framework\App\RouterInterface
     {
         $url_key = trim($request->getPathInfo(), '/');
 
-        if(strpos($url_key, 'checkout/index/bitcoinPayment') === 0) {
+        if (strpos($url_key, 'checkout/index/bitcoinPayment') === 0) {
             $request->setModuleName('m2bitcoinpayment')->setControllerName('index')->setActionName('bitcoinPayment');
             $request->setAlias(\Magento\Framework\Url::REWRITE_REQUEST_PATH_ALIAS, $url_key);
 
-            return $this->actionFactory->create('Magento\Framework\App\Action\Forward');
+            return $this->actionFactory->create(Forward::class);
         } elseif (strpos($url_key, 'checkout/cryptopayment/order') === 0) {
             $request->setModuleName('m2bitcoinpayment')->setControllerName('cryptopayment')->setActionName('order');
             $request->setAlias(\Magento\Framework\Url::REWRITE_REQUEST_PATH_ALIAS, $url_key);
 
-            return $this->actionFactory->create('Magento\Framework\App\Action\Forward');
+            return $this->actionFactory->create(Forward::class);
         } elseif (strpos($url_key, 'checkout/bitcoin/payment') === 0) {
             $request->setModuleName('m2bitcoinpayment')->setControllerName('bitcoin')->setActionName('payment');
             $request->setAlias(\Magento\Framework\Url::REWRITE_REQUEST_PATH_ALIAS, $url_key);
 
-            return $this->actionFactory->create('Magento\Framework\App\Action\Forward');
+            return $this->actionFactory->create(Forward::class);
         } elseif (strpos($url_key, 'checkout/bitcoin/pooling') === 0) {
             $request->setModuleName('m2bitcoinpayment')->setControllerName('bitcoin')->setActionName('pooling');
             $request->setAlias(\Magento\Framework\Url::REWRITE_REQUEST_PATH_ALIAS, $url_key);
 
-            return $this->actionFactory->create('Magento\Framework\App\Action\Forward');
+            return $this->actionFactory->create(Forward::class);
         }
     }
 }

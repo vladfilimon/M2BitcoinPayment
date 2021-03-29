@@ -2,20 +2,11 @@
 namespace VladFilimon\M2BitcoinPayment\Controller\Index;
 
 use Magento\Framework\App\Action\Action;
-use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\Exception\NotFoundException;
-use Magento\Sales\Model\Order\Email\Sender\OrderSender;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Session\SessionManager;
+use Magento\Sales\Model\Order\Email\Sender\OrderSender;
 
-/**
- * Controller class for ESI calls
- *
- * @package Cyberia\ESI\Controller\Index
- */
 class BitcoinPayment extends Action
 {
-
     const ERR_WALLET_CONNECTION_FAILED = 1;
 
     protected $_resultRawFactory;
@@ -75,8 +66,6 @@ class BitcoinPayment extends Action
      */
     protected $resultPageFactory;
 
-
-
     /**
      * Constructor
      *
@@ -112,8 +101,7 @@ class BitcoinPayment extends Action
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Framework\Api\SortOrderBuilder $sortOrderBuilder,
         \Magento\Framework\Api\FilterBuilder $filterBuilder
-    )
-    {
+    ) {
         $this->_resultRawFactory = $resultRawFactory;
         $this->_scopeConfig = $scopeConfig;
         $this->_orderFactory = $orderFactory;
@@ -132,7 +120,8 @@ class BitcoinPayment extends Action
         return parent::__construct($context);
     }
 
-    protected function getPendingOrderByQuoteId($quoteId) {
+    protected function getPendingOrderByQuoteId($quoteId)
+    {
         $filters = [
             $this->filterBuilder
                 ->setField('quote_id')
@@ -175,10 +164,12 @@ class BitcoinPayment extends Action
     {
         $orderId = $this->_checkoutSession->getLastOrderId();
 
-        if(!$orderId) {
+        if (!$orderId) {
             $redirectUrl = $this->getOnepage()->getCheckout()->getRedirectUrl();
             $result = $this->resultRedirectFactory->create()->setPath('checkout/cart');
-            $this->messageManager->addErrorMessage(__('Your checkout session has expired! Please add some products to the cart and try again.'));
+            $this->messageManager->addErrorMessage(
+                __('Your checkout session has expired! Please add some products to the cart and try again.')
+            );
 
             return $result;
         }

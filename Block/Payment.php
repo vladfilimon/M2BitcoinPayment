@@ -3,12 +3,11 @@
 namespace VladFilimon\M2BitcoinPayment\Block;
 
 use BaconQrCode\Renderer\ImageRenderer;
-use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
-use VladFilimon\M2BitcoinPayment\Model\Bitcoin;
-use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\Stdlib\DateTime\DateTimeFactory;
+use Magento\Framework\View\Element\Template\Context;
+use VladFilimon\M2BitcoinPayment\Model\Bitcoin;
 
 class Payment extends \Magento\Framework\View\Element\Template
 {
@@ -33,8 +32,6 @@ class Payment extends \Magento\Framework\View\Element\Template
         $this->_dateFactory = $dateFactory;
         return parent::__construct($context, $data);
     }
-
-
 
     protected function getPayment()
     {
@@ -87,9 +84,17 @@ class Payment extends \Magento\Framework\View\Element\Template
             );
     }
 
+    public function getTotalTime()
+    {
+        return $this->getOrder()->getPayment()
+            ->getAdditionalInformation(
+                Bitcoin::PAYMENT_ADDITIONAL_INFO_FIELD_EXPIRES
+            ) * 60;
+    }
+
     public function getRemainingTime($forceReload = false)
-    { return 21;
-        if ($this->_remainingTime === NULL || $forceReload) {
+    {
+        if ($this->_remainingTime === null || $forceReload) {
             $order = $this->getOrder();
             $createdAt = $order->getCreatedAt();
             $dateObj = $this->_dateFactory->create();
@@ -97,7 +102,6 @@ class Payment extends \Magento\Framework\View\Element\Template
                 ->getAdditionalInformation(
                     Bitcoin::PAYMENT_ADDITIONAL_INFO_FIELD_EXPIRES
                 );
-            $expireOffset = 1028;
             $secondsLeft = (($dateObj->gmtTimestamp($createdAt) + ($expireOffset * 60)) - $dateObj->gmtTimestamp());
             $this->_remainingTime = max(0, $secondsLeft);
         }
@@ -115,5 +119,4 @@ class Payment extends \Magento\Framework\View\Element\Template
 
         return base64_encode($writer->writeString($this->getUri()));
     }
-
 }

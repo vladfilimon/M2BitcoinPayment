@@ -1,8 +1,8 @@
 <?php
 namespace VladFilimon\M2BitcoinPayment\Model;
 
-use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Store\Model\ScopeInterface;
 
 class Transport
@@ -85,7 +85,6 @@ class Transport
             if (empty($data->error)) {
                 return $data->result;
             }
-
         }
 
         throw new \Exception('ERR_BITCOIN_CLIENT_RPC_CALL');

@@ -1,22 +1,4 @@
 <style>
-    /*
-    html {
-        height:100%;
-        margin:0;
-        min-height: 100%;
-        font-family: sans-serif;
-    }
-
-    body {
-        background-image: linear-gradient(#E0FFFF, #F0F8FF);
-        background-repeat: no-repeat;
-        background-size: cover;
-        text-align: center;
-        height: 100%;
-        margin:0;
-        overflow: hidden;
-    }
-    */
     #wrapper {
         text-align: center;
     }
@@ -46,7 +28,7 @@
         position: relative;
         margin-bottom: 0px;
         padding-bottom: 0px;
-        padding-top: 10px;
+
         line-height: 30px;
         font-size: 15px;
         border-radius: 6px;
@@ -60,14 +42,7 @@
     .btnPlata button{
         hover{background-color:orange;}
     }
-    /*
-    .main {
-        position:relative;
-    }
-    #wrapper {
-        position:relative;
 
-    }*/
     #my_canvas{
         width: 70px;
         height: 70px;
@@ -80,7 +55,7 @@
     }
     #info {
         font-size:12px;
-        display:table;
+        display:none;
         z-index:2;
         position:absolute;
         width:90%;
@@ -101,23 +76,29 @@
         font-family: Heebo, Sans-serif;
     }
     p {
-        display:table-row;
+        display:flex;
         text-align: left;
         width: auto;
         clear: both;
         font-size:12px;
+        align-items: center;
+
     }
-    p span {
+    p span:first-child {
         font-weight: bold;
         display:table-cell;
         float:left;
         width:20%;
+        cursor:pointer;
     }
 
     p span.timer {
         float:left;
         width: 8%;
-        margin-left: 10%;
+    }
+
+    .warning {
+        color:red;
     }
 
     #info div:first-child {
@@ -140,37 +121,137 @@
     #my_canvas {
         cursor: pointer;
     }
+
+
+    ol {
+        margin-top:12%;
+        counter-reset: li;
+        list-style: none;
+        padding: 0;
+        text-shadow: 0 1px 0 rgba(255,255,255,.5);
+        text-align: left;
+        margin-right:8%;
+    }
+
+    ol a {
+        position: relative;
+        display: block;
+        padding: .4em .4em .4em 2em;
+        margin: .5em 0;
+        background: rgba(100,124,232,.05);
+        color: #444;
+        text-decoration: none !important;
+        border-radius: .3em;
+        transition: .3s ease-out;
+    }
+
+    ol a:hover { background: #E8D064; }
+    ol a:hover:before { transform: rotate(360deg); }
+    ol a:before {
+        content: counter(li);
+        counter-increment: li;
+        position: absolute;
+        left: -1.3em;
+        top: 50%;
+        margin-top: -1.3em;
+        background: #64E88E;
+        box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 7%);
+        height: 2em;
+        width: 2em;
+        line-height: 2em;
+        border: .3em solid #fff;
+        text-align: center;
+        font-weight: bold;
+        border-radius: 2em;
+        transition: all .3s ease-out;
+    }
+
+
+    input[type=text]{
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        border-radius: 20px;
+        border: 4px solid #fff;
+
+        background:rgba(100,124,232,.05);
+        width: 250px;
+        text-overflow: ellipsis;
+
+    }
+
+    input[type=text]:focus {
+        outline: none;
+        border: 1px solid #a0d18c;
+        color: #2d9fd9;
+    }
+
+    span:hover .tooltip {
+        display:block !important;
+        background: #E8D064;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        border-radius: 20px;
+        border: 4px solid #fff;
+        padding: 10px;
+        width:100%;
+    }
+
+    .tooltip {
+        display: none !important;
+        font-size:12px;
+        font-weight: lighter;
+        margin-left: 28px; /* moves the tooltip to the right */
+        margin-top: 0px; /* moves it down */
+        position: absolute;
+        z-index: 1000;
+        box-shadow: 0 0 20px #333;
+    }
+
 </style>
 <?php
 if ($this->getRemainingTime()):?>
     <div id="wrapper">
-        <h2><?php echo __('Bitcoin payment');?></h2>
-        <h3><?php echo __('Do you need help?');?></h3>
+        <h2><?= __('Bitcoin payment');?></h2>
+        <h3><?= __('Do you need help?');?></h3>
         <div class="code">
             <div id="info">
-                <div><a onclick="jQuery('#info').toggle('display');">&#x2715</a></div>
-                <p><span><?php echo __('Order id')?>:</span> <?php echo $this->getOrder()->getIncrementId();?></p>
-                <p><span><?php echo __('Address')?>:</span> <?php echo $this->getAddress();?></p>
-                <p><span><?php echo __('Amount')?>:</span> <?php echo $this->getAmount();?></p>
-                <p><span><?php echo __('Max conf')?>:</span> <?php echo $this->getRequiredConfirmations();?></p>
-                <p><span><?php echo __('Time left')?>:</span> <span class="timer"><?php echo $this->getRemainingTime();?></span> <?php echo __('seconds')?></p>
+                <div><a onclick="toggleInfoDisplay()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M15 15v1h1v-1h-.333v-.333h-.334v.333h-.333zm.667.333v.333h-.334v-.333h.334zm-7.667.667h2.667v-2.667h-2.667v2.667zm.333-2.333h2v2h-2v-2zm6.667 1v-.333h.333v.333h-.333zm-6.333-.667h1.333v1.333h-1.333v-1.333zm2.666-1v.667h-.333v-.667h.333zm.667-2.667h.333v.333h-.333v-.333zm.333-.333h.334v.333h-.334v-.333zm.334.667v-.333h.333v.333h-.333zm0-.667h.333v-2h-1v.333h-1v.333h1v.334h.667v1zm-.334-1.333v-.334h.334v.333h-.334zm-2.333 1.333h-1.333v-1.333h1.333v1.333zm2 0h-.333v-.667h-.667v-.333h1v.333h.333v.333h-.333v.334zm-1.333-2h-2.667v2.667h2.667v-2.667zm-.334 2.333h-2v-2h2v2zm1 0h-.333v-.333h.667v.667h-.334v-.334zm-1 1v.333h-.333v-.333h.333zm5 2h.667v1h-.333v-.333h-.667v.333h-.333v-.333h-.334v-.333h.334v-.333h.333v.333h.333v-.334zm-1.333.667h-.333v.333h-.334v-.333h-.333v-.333h.333v-.333h-.666v-.334h-.334v.333h-.333v.333h-.667v.334h-.333v2h1.667v-.333h-.334v-.667h-.333v.667h-.667v-.333h.334v-.334h-.334v-.333h1v-.333h.667v.666h-.333v.333h.333v.667h.333v-.667h.334v.333h.333v-.333h.333v-.667h.334v-.333h-.667v-.333zm-.333 1h-.334v-.333h.334v.333zm2-2v-.667h.333v.667h-.333zm-3 1.667v.333h-.334v-.333h.334zm1.666 1v-.333h.334v.666h-.667v-.333h.333zm-1-7.667v2.667h2.667v-2.667h-2.667zm2.334 2.333h-2v-2h2v2zm-.334-.333h-1.333v-1.333h1.333v1.333zm.334 1.333h.333v.667h-.333v.333h-.667v-1.333h.333v.667h.334v-.334zm-1.334 2v-1h.334v1h-.334zm-4.333-2.333v.333h-.667v.333h.334v.334h-1v-.333h.333v-.333h-.667v.333h-.333v-.667h2zm-.333 1.333v-.333h.333v1h-.333v-.333h-.334v.333h-.333v-.333h-.333v.333h-.667v-.333h.333v-.333h1.334zm-1.334-.333v.333h-.333v-.333h.333zm6.334-.667h-.334v-.333h.334v.333zm-4.334 1.334h.334v.333h-.334v-.333zm5 .666h-.333v-.333h.333v.333zm-1.666.334v-.333h.333v.333h-.333zm-.334-.334h.334v-1h.666v-.333h.334v-.333h-.334v-.333h-.666v-.334h-.334v.333h-.333v-.333h-.333v.333h-.334v-.333h-.333v.333h-.333v.333h-.334v-.333h.334v-.333h-1.334v.333h.667v.333h-.667v.334h.334v.666h.333v-.333h.667v.667h.333v-1.333h.333v.667h1v.333h-.666v.333h.666v.333zm.334-1.666h.333v.333h-.333v-.333zm-.667.333h-.333v-.333h.333v.333zm-1-12c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm8 12c0 4.418-3.582 8-8 8s-8-3.582-8-8 3.582-8 8-8 8 3.582 8 8zm-19 0c0-6.065 4.935-11 11-11v2c-4.962 0-9 4.038-9 9 0 2.481 1.009 4.731 2.639 6.361l-1.414 1.414.015.014c-2-1.994-3.24-4.749-3.24-7.789z"/></svg>
+                    </a></div>
+                <ol>
+                    <li><a href="#">
+                            <?= __('Please make sure you do not send the transaction from an exchange as there will be no way to refund if the need arises');?>
+                        </a></li>
+                    <li><a href="#">
+                            <?= __('Uncheck the "Replace by Fee" or "Subtract Fee from Amount" options in your wallet client when sending the transaction');?>
+                        </a></li>
+                    <li><a href="#">
+                            <?= __('Before sending the transaction make sure there is enough time left on the counter for the order to confirm and use and appropiate fee');?>
+                        </a></li>
+                </ol>
+                    <p><span><?= __('Order id')?>:</span> <?php echo $this->getOrder()->getIncrementId();?></p>
+                <p class="payment_address_holder"><span><?= __('Address')?>:</span> <input type="text" id="payment_address" class="payment_address" name="payment_address" value="<?= $this->getAddress();?>" readonly /></p>
+                <p><span><?= __('Amount')?>:<span class="tooltip"><?= __('This is the BTC amount that must be received for the payment of this order. You would need to send this amount + a suitable fee.'); ?></span></span><?php echo $this->getAmount();?></p>
+                <p><span><?= __('Max conf')?>:<span class="tooltip"><?= __('This is the required number of confirmations on the bitcoin network after which your payment will be considered succesfull.'); ?></span></span> <?php echo $this->getRequiredConfirmations();?></p>
+                <p><span><?= __('Time left')?>:<span class="tooltip"><?= __('The payment must be send and reach the required number of confirmations before this time expires. This limitation is put forth in order to protect the merchant because of the volatile nature of bitcoin\'s price.')?></span></span> <span class="timer"><?php echo $this->getRemainingTime();?></span> <?= __('seconds')?></p>
             </div>
             <br>
             <div id="loading">
-                <canvas id="my_canvas" width="70" height="70" onclick="jQuery('#info').toggle('display');">
+                <canvas id="my_canvas" width="70" height="70" onclick="toggleInfoDisplay()">
                 </canvas>
             </div>
 
             <h2>Send <?php echo $this->getAmount();?> BTC to <br/><span><?php echo $this->getAddress();?></span></h2>
             <div class="QR">
-                <img src="data:image/svg+xml;base64, <?php echo $this->getQr(); ?> " alt="<?php echo __('Payment QR code');?>"/>
+                <img src="data:image/svg+xml;base64, <?php echo $this->getQr(); ?> " alt="<?= __('Payment QR code');?>"/>
             </div>
-            <div style="width:0;height:0;overflow: hidden">
+
             <input type="text" id="payment_uri" name="payment_uri" value="<?php echo $this->getUri();?>" readonly />
-            </div>
-                <h5><a href="#" onclick="javascipt:document.getElementById('payment_uri').select();document.execCommand('copy');"><?php echo __('Copy payment URL');?></a></h5>
+            <a title="<?= __('Copy payment URI');?>" href="#" onclick="javascipt:document.getElementById('payment_uri').select();document.execCommand('copy');">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform: scale(0.8);"><path fill="#006bb4" d="M15.143 13.244l.837-2.244 2.698 5.641-5.678 2.502.805-2.23s-8.055-3.538-7.708-10.913c2.715 5.938 9.046 7.244 9.046 7.244zm8.857-7.244v18h-18v-6h-6v-18h18v6h6zm-2 2h-12.112c-.562-.578-1.08-1.243-1.521-2h7.633v-4h-14v14h4v-3.124c.6.961 1.287 1.823 2 2.576v6.548h14v-14z"/></svg>
+            </a>
             <div class="button">
-                <button class="btnPlata"><span><?php echo __('Open in Wallet');?></span></button>
+                <button class="btnPlata"><span><?= __('Open in Wallet');?></span></button>
             </div>
             <br/>
         </div>
@@ -179,17 +260,20 @@ if ($this->getRemainingTime()):?>
     <script type="text/javascript">
         setInterval(function(){
             let remaining = parseInt(document.querySelector('span.timer').textContent);
+            if (remaining < 5 * 60) {
+                document.querySelector('span.timer').classList.add('warning');
+            }
             if (remaining > 0) {
                 document.querySelector('span.timer').textContent = parseInt(document.querySelector('span.timer').textContent) - 1;
             }
         }, 1000);
 
         var ctx = document.getElementById('my_canvas').getContext('2d');
-        var al = 0;
+        var al = <?php echo $this->getTotalTime() - $this->getRemainingTime();?>;;
         var start = 4.72;
         var cw = ctx.canvas.width;
         var ch = ctx.canvas.height;
-        var total = <?php echo $this->getRemainingTime();?>;
+        var total = <?php echo $this->getTotalTime();?>;
         var diff;
         var gradient = ctx.createLinearGradient(0, 0, 170, 0);
         gradient.addColorStop("0", "navy");
@@ -216,10 +300,29 @@ if ($this->getRemainingTime()):?>
         document.addEventListener("DOMContentLoaded", function(){
             sim = setInterval(progressSim, 600);
         });
-/*
+
         setTimeout(function(){
             window.location.reload(1);
-        }, 10000);*/
+        }, 10000);
+
+        function toggleInfoDisplay() {
+            if (document.getElementById('info').style.display == 'none') {
+                document.getElementById('info').style.display = 'block';
+                sessionStorage.setItem('info', 1);
+            }
+            else {
+                document.getElementById('info').style.display = 'none';
+                sessionStorage.setItem('info', 0);
+            }
+        }
+
+        (function() {
+            if (sessionStorage.getItem('info') == 1){
+                document.getElementById('info').style.display = 'block';
+            } else {
+                document.getElementById('info').style.display = 'none';
+            }
+        })();
     </script>
 <?php else:
     echo __('Payment link has expired');

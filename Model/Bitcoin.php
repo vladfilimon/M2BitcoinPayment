@@ -1,25 +1,23 @@
 <?php
 namespace VladFilimon\M2BitcoinPayment\Model;
 
-use VladFilimon\M2BitcoinPayment\Model\Transport;
-use VladFilimon\M2BitcoinPayment\Helper\Data;
+use Magento\Framework\Api\AttributeValueFactory;
+use Magento\Framework\Api\ExtensionAttributesFactory;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ObjectManager;
-use Magento\Framework\DataObject;
 use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Registry;
-use Magento\Framework\Api\ExtensionAttributesFactory;
-use Magento\Framework\Api\AttributeValueFactory;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\UrlInterface;
-use Magento\Payment\Model\Method\AbstractMethod;
-use Magento\Payment\Model\Method\Logger;
-use Magento\Payment\Model\InfoInterface;
 use Magento\Payment\Block\Info\Instructions;
 use Magento\Payment\Helper\Data as PaymentHelper;
-use Magento\Sales\Model\Order;
+use Magento\Payment\Model\InfoInterface;
+use Magento\Payment\Model\Method\AbstractMethod;
+use Magento\Payment\Model\Method\Logger;
 use Magento\Paypal\Model\Config;
+use Magento\Sales\Model\Order;
+use VladFilimon\M2BitcoinPayment\Helper\Data;
 
 /**
  * Payment method model
@@ -37,7 +35,7 @@ class Bitcoin extends AbstractMethod
     const STATUS_PENDING_CONFIRMED = 'bitcoin_pending_confirmed';
 
     /**
-     * Payment method code
+     * Code for payment method
      */
     const PAYMENT_METHOD_CODE = 'vladfilimon_m2bitcoinpayment';
 
@@ -73,7 +71,6 @@ class Bitcoin extends AbstractMethod
      * @var string
      */
     protected $_infoBlockType =  Instructions::class;
-
 
     /**
      * Availability option
@@ -171,12 +168,14 @@ class Bitcoin extends AbstractMethod
         try {
             $address = $this->_transport->getnewaddress();
 
-            if(is_null($address)) {
+            if ($address === null) {
                 throw new \Exception('ERR_WALLET_NO_RESPONSE');
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->critical(sprintf('ERR_WALLET_CONNECTION_FAILED: %s', $e->getMessage()));
-            throw new \Magento\Framework\Exception\LocalizedException(__('ERR_WALLET_CONNECTION_FAILED: We can\'t communicate with our wallet at this time.'));
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('ERR_WALLET_CONNECTION_FAILED: We can\'t communicate with our wallet at this time.')
+            );
         }
 
         $payment->setAdditionalInformation(

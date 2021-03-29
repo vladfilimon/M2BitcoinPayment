@@ -1,9 +1,9 @@
 <?php
 namespace VladFilimon\M2BitcoinPayment\Block\Adminhtml\System\Config;
 
-use Magento\Framework\DataObject;
-use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Config\Block\System\Config\Form\Field;
+use Magento\Framework\Data\Form\Element\AbstractElement;
+use Magento\Framework\DataObject;
 
 class Test extends Field
 {
@@ -48,10 +48,10 @@ class Test extends Field
     public function setButtonLabel($buttonLabel)
     {
         $this->_buttonLabel = $buttonLabel;
-        
+
         return $this;
     }
-    
+
     /**
      * Set template to itself
      *
@@ -60,13 +60,13 @@ class Test extends Field
     protected function _prepareLayout()
     {
         parent::_prepareLayout();
-        
+
         if (!$this->getTemplate()) {
             $this->setTemplate('system/config/test.phtml');
         }
-              
+
         $this->_buttonParams = new DataObject();
-               
+
         return $this;
     }
 
@@ -81,7 +81,7 @@ class Test extends Field
         $element->unsScope()
             ->unsCanUseWebsiteValue()
             ->unsCanUseDefaultValue();
-            
+
         return parent::render($element);
     }
 
@@ -97,7 +97,7 @@ class Test extends Field
         $label = !empty($data['button_label'])
             ? $data['button_label']
             : $this->_buttonLabel;
-            
+
         $this->addData(
             [
                 'button_label'   => __($label),
@@ -107,10 +107,10 @@ class Test extends Field
                 'html_result_id' => 'vf_bitcoin_rpc_test',
             ]
         );
-        
+
         return $this->_toHtml();
     }
-    
+
     /**
      * Get the button params
      *

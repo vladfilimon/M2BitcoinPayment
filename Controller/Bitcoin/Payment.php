@@ -1,16 +1,10 @@
 <?php
 namespace VladFilimon\M2BitcoinPayment\Controller\Bitcoin;
 
+use Magento\Framework\App\Action\Action;
+use VladFilimon\M2BitcoinPayment\Helper\Data;
 use VladFilimon\M2BitcoinPayment\Model\Bitcoin;
 use VladFilimon\M2BitcoinPayment\Model\Transport;
-use VladFilimon\M2BitcoinPayment\Helper\Data;
-use Magento\Framework\App\Action\Action;
-use Magento\Framework\Controller\ResultFactory;
-use \Magento\Framework\Exception\NotFoundException;
-use Magento\Sales\Model\Order\Email\Sender\OrderSender;
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Session\SessionManager;
-use Magento\Framework\Exception\NoSuchEntityException;
 
 class Payment extends Action
 {
@@ -61,8 +55,7 @@ class Payment extends Action
         \Magento\Framework\Event\ManagerInterface $eventManager,
         Transport $transport,
         Data $helper
-    )
-    {
+    ) {
         $this->_orderRepository = $orderRepository;
         $this->_pageResultFactory = $pageFactory;
         $this->_checkoutSession = $checkoutSession;
@@ -89,9 +82,7 @@ class Payment extends Action
 
         try {
             $order = $this->_orderRepository->get(reset($decodedArray));
-        }
-        catch(\NoSuchEntityException $e)
-        {
+        } catch (\NoSuchEntityException $e) {
             throw new \Exception('ERR_ORDER_NOT_FOUND');
         }
 
@@ -106,7 +97,7 @@ class Payment extends Action
          * If order is in STATE_PROCESSING, it should be enough.
          * Thus, for special cases, we can confirm orders from admin without receiving the actual paymnet
          */
-        switch($order->getState()) {
+        switch ($order->getState()) {
             case \Magento\Sales\Model\Order::STATE_PENDING_PAYMENT:
                 // Correct order state for payment page
                 break;
@@ -122,14 +113,14 @@ class Payment extends Action
                  * @TODO make a separate success page
                  */
                 return $this->_redirect('checkout/onepage/success');
-
+/*
                 $page = $this->_pageResultFactory->create();
                 $this->_eventManager->dispatch(
                     'checkout_onepage_controller_success_action',
                     ['order_ids' => [$order->getId()]]
                 );
 
-                return $page;
+                return $page;*/
             case \Magento\Sales\Model\Order::STATE_NEW:
                 throw new \Exception('ERR_PAYMENT_ORDER_STATE_INCOMPATIBLE: Please complete the checkout process first.');
                 break;
@@ -151,5 +142,4 @@ class Payment extends Action
 
         return $page;
     }
-
 }

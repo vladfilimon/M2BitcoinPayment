@@ -2,8 +2,8 @@
 namespace VladFilimon\M2BitcoinPayment\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Store\Model\ScopeInterface;
 use Magento\Sales\Model\Order;
+use Magento\Store\Model\ScopeInterface;
 
 class Data extends AbstractHelper
 {
